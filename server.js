@@ -1,8 +1,9 @@
-const express =require('express');
+const express = require('express');
 const cors = require('cors');
-import dotenv from "dotenv";
-const pool = require('../backEnd/db')
-import userRouter from './route/route.js';
+const dotenv = require("dotenv");
+const pool = require('../backEnd/db');
+const userRouter = require('./route/route.js');
+const connectDB = require('./db.js');
 
 // Initialize dotenv to access environment variable
 const port = process.env.PORT
@@ -12,7 +13,7 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());// req.body
-app.use(morgan("dev")); // Log all requests to the console
+
 
 //Routes//
 
@@ -170,7 +171,7 @@ app.post('/users/newApplication', async(req, res) => {
 
 //delete FROM TABLE 
 
-app.listen(port, () => {
+app.listen(port, async() => {
   console.log(`Server is running on port ${port}`);
-  connectDB(); // connect to the database
+  await connectDB(); // connect to the database
 });

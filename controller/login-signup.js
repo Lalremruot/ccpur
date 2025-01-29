@@ -1,7 +1,7 @@
 const express = require('express');
 
 // register a new user
-export const register = async (req, res) => {
+ const register = async (req, res) => {
     try {
       return res.status(200).json({
         message: "User registered successfully",
@@ -14,7 +14,7 @@ export const register = async (req, res) => {
   };
   
   // login a user
-  export const login = async (req, res ) => {
+   const login = async (req, res ) => {
     try {
       return res.status(200).json({
         message: "User logged in successfully",
@@ -24,4 +24,8 @@ export const register = async (req, res) => {
         message: "Internal Server Error",
       });
     }
+  };
+  module.exports = {
+    register,
+    login,
   };
