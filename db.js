@@ -1,22 +1,26 @@
 const { Pool } = require('pg');
 
 // configure the database connection
-const connectDB = async () => {
 const pool = new Pool({
-  user: 'postgres',
-  password: 'root',
-  host: 'localhost',
-  port: 5432,
-  database: 'test'
+  user: 'postgres',    // your PostgreSQL user
+  password: 'root',    // your PostgreSQL password
+  host: 'localhost',   // your PostgreSQL host
+  port: 5432,          // default PostgreSQL port
+  database: 'test'     // your database name
 });
 
- // test the connection
- pool.query("SELECT NOW()", (err, res) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Database connected successfully");
+// Function to check the DB connection
+const connectDB = async () => {
+  try {
+    // test the connection asynchronously
+    const res = await pool.query("SELECT NOW()");
+    console.log("Database connected successfully:", res.rows[0]);
+  } catch (err) {
+    console.error("Database connection error:", err);
   }
-});
-}
-module.exports = connectDB; // Export pool as the default export
+};
+
+// Export pool for use in other files (such as for queries)
+module.exports = pool;
+
+connectDB();

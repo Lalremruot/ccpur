@@ -1,5 +1,4 @@
- const express = require('express');
-
+const express = require('express');
 const { newuser, login, existingUser } = require('../controller/login-signup');
 const newapps = require('../controller/applicationform');
 
@@ -9,7 +8,7 @@ const userRouter = express.Router();
 userRouter.post("/register", newuser);
 
 //Register an existing student
-userRouter.post("/existstdregister", existingUser);
+userRouter.post("/exist-register", existingUser);
 
 // Login a user
 userRouter.post("/login", login);
