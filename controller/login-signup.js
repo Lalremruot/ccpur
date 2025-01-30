@@ -68,7 +68,7 @@ const existingUser = async(req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // execute SQL query to insert user into the database
-     const newUser = await pool.query('INSERT INTO users ( name, email, phone_number, roll_number,semester, password) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', [ name, email, phone_number, roll_number,semester, password]);
+     const newUser = await pool.query('INSERT INTO users ( name, email, phone_number, roll_number,semester, password) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', [ name, email, phone_number, roll_number,semester, hashedPassword]);
      res.json(newUser[0]);
      
   } catch (error) {
