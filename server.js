@@ -14,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());// req.body
 app.use("/api/user", userRouter);
+app.use(express.urlencoded({ extended: true }));
 
 // Unknown route handler
 app.use((err, req, res) => {
@@ -24,7 +25,7 @@ app.use((err, req, res) => {
    // Log the query parameters from the request (if any)
    console.log('Query parameters:', req.query);
    // Log the headers sent with the request
-   console.log('Request headers:', req.headers);
+   console.log('Request headers:', req.header);
 
   // Respond with a generic error message and status 500
   res.status(500).send('Route not found');
@@ -35,4 +36,3 @@ app.use((err, req, res) => {
 app.listen(port, () =>{
   console.log(`Server is running on port ${port}`);
 });
-
