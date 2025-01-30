@@ -45,34 +45,50 @@ const newuser = async (req, res) => {
     });
 }};
   
-//User registration : existing student
-const existingUser = async(req, res) => {
+const existingUser = async (req, res) => {
   try {
-    // get the user data from the request body
+    // Get the user data from the request body
     const { name, email, phone_number, roll_number, semester, password } = req.body;
-  
-    // check if user data is provided
+
+    // Log request body for debugging
+    console.log("Received Data:", req.body);
+
+    // Check if all required fields are provided
     if (!name || !email || !phone_number || !roll_number || !semester || !password) {
-    return res.status(400).json({message: "Please provide all details"});
-     }
+      return res.status(400).json({ message: "Please provide all details" });
+    }
 
-   // check if user already exists
-      const user = await pool.query("SELECT name, email, phone_number, roll_number, semester FROM users;");
-  
+    // Check if the user already exists by email or roll_number
+    const user = await pool.query(
+      "SELECT * FROM users WHERE email = $1 OR roll_number = $2",
+      [email, roll_number]
+    );
+
     if (user.rows.length > 0) {
-      return res.status(400).json({message: "User already exists"});
-      }
+      return res.status(400).json({ message: "User already exists" });
+    }
 
-    // hash the password
+    // Hash the password
     const salt = await bcrypt.genSalt(5);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // execute SQL query to insert user into the database
-     const newUser = await pool.query('INSERT INTO users ( name, email, phone_number, roll_number,semester, password) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', [ name, email, phone_number, roll_number,semester, hashedPassword]);
-     res.json(newUser[0]);
-     
+    // Insert the new user into the database
+    const query =
+      "INSERT INTO users (name, email, phone_number, roll_number, semester, password) VALUES($1, $2, $3, $4, $5, $6) RETURNING *";
+    const values = [name, email, phone_number, roll_number, semester, hashedPassword];
+
+    const result = await pool.query(query, values);
+    console.log("User Created:", result.rows[0]);
+
+    // Send a success response with the newly created user data
+    return res.status(201).json({
+      message: "User registered successfully",
+      user: result.rows[0],
+    });
+
   } catch (error) {
-    console.error(error.message)
+    console.error("Server Error:", error); // Log the error for debugging
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -122,9 +138,9 @@ const existingUser = async(req, res) => {
         message: "Internal Server Error",
       });
     }
-  };
+};
   module.exports = {
     newuser,
     existingUser,
     login,
-  };
+};
