@@ -8,7 +8,7 @@ const userRouter = express.Router();
 userRouter.post("/register", newuser);
 
 //Register an existing student
-userRouter.post("/exist-register", existingUser);
+userRouter.post("/existingUser", existingUser);
 
 // Login a user
 userRouter.post("/login", login);
