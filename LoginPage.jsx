@@ -13,7 +13,10 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/signin", formData);
+      const response = await axios.post(
+        "http://localhost:5000/signin",
+        formData
+      );
 
       if (response.status === 200 || response.status === 201) {
         console.log("Login successful");
@@ -43,15 +46,21 @@ const LoginPage = () => {
         className="bg-white shadow-lg p-6 flex flex-col gap-6 w-80 rounded-md"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-center text-xl font-semibold text-gray-800">Login</h2>
+        <h2 className="text-center text-xl font-semibold text-gray-800">
+          Login
+        </h2>
 
-        {error && <div className="text-red-500 text-sm text-center">{error}</div>}
+        {error && (
+          <div className="text-red-500 text-sm text-center">{error}</div>
+        )}
 
         <div>
           <input
             name="email"
             type="email"
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             placeholder="Email"
             required
             className="w-full border border-gray-500 py-2 px-3 rounded-sm outline-none"
@@ -62,18 +71,27 @@ const LoginPage = () => {
           <input
             name="password"
             type="password"
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
             placeholder="Password"
             required
             className="w-full border border-gray-500 py-2 px-3 rounded-sm outline-none"
           />
+          <Link to="/forgot-password" className="text-xs underline text-blue-500 mt-4">
+            Forgot password?
+          </Link>
         </div>
-
+        
         <div className="flex items-center justify-center">
           <button
             type="submit"
             className={`px-6 py-2 bg-gray-800 w-full text-white rounded-sm hover:bg-gray-900 transition duration-300 
-              ${loading ? "bg-gray-500 cursor-not-allowed" : "bg-gray-800 hover:bg-gray-900"}`}
+              ${
+                loading
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-gray-800 hover:bg-gray-900"
+              }`}
             disabled={loading}
           >
             {loading ? (
@@ -85,12 +103,14 @@ const LoginPage = () => {
             )}
           </button>
         </div>
-
-        <div className="flex items-center justify-end gap-1 mt-[-20px]">
-          <p className="text-xs">Don't have an account?</p>
-          <Link to="/signup-page" className="underline text-blue-500 text-sm">
-            Register
-          </Link>
+        
+        <div className="flex justify-center items-center gap-1 mt-[-20px]">
+          <div className="flex">
+            <p className="text-xs">Don't have an account?</p>
+            <Link to="/signup-page" className="underline text-blue-500 text-xs">
+              Register
+            </Link>
+          </div>
         </div>
       </form>
     </div>
